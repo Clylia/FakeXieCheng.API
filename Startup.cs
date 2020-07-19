@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using AutoMapper;
 
 namespace FakeXieCheng.API
 {
@@ -26,7 +28,13 @@ namespace FakeXieCheng.API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(setupAction=>
+            {
+                setupAction.ReturnHttpNotAcceptable = true;
+                //setupAction.OutputFormatters.Add(
+                //    new XmlDataContractSerializerOutputFormatter()
+                //    );
+            }).AddXmlDataContractSerializerFormatters();
             //services.AddTransient<ITouristRouteRepository,MockTouristRouteRepository>();
             services.AddTransient<ITouristRouteRepository,TouristRouteRepository>();
             services.AddDbContext<AppDbContext>(option =>
@@ -35,6 +43,7 @@ namespace FakeXieCheng.API
                 //option.UseSqlServer("server=localhost;Database=FakeXiechengDb;User Id=sa;Password=PaSSword12!");
                 option.UseSqlServer(Configuration["DbContext:ConnectionString"]);
             });
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
