@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeXieCheng.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200719061315_DataSeeding2")]
-    partial class DataSeeding2
+    [Migration("20200719062149_InitMigration")]
+    partial class InitMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
