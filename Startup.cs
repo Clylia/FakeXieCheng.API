@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using AutoMapper;
+using Newtonsoft.Json;
 
 namespace FakeXieCheng.API
 {
@@ -37,6 +38,7 @@ namespace FakeXieCheng.API
             }).AddXmlDataContractSerializerFormatters();
             //services.AddTransient<ITouristRouteRepository,MockTouristRouteRepository>();
             services.AddTransient<ITouristRouteRepository,TouristRouteRepository>();
+
             services.AddDbContext<AppDbContext>(option =>
             {
                 //option.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=FakeXiechengDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");

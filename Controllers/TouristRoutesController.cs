@@ -24,6 +24,7 @@ namespace FakeXieCheng.API.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [HttpHead]
         public IActionResult GetTouristRoutes()
         {
             var touristRoutesFromRepo = _touristRouteRepository.GetTouristRoutes();
@@ -31,10 +32,10 @@ namespace FakeXieCheng.API.Controllers
             {
                 return NotFound("没有旅游路线");
             }
-            var touristRouteDto = _mapper.Map<IEnumerable<TouristRoute>>(touristRoutesFromRepo);
-            return Ok(touristRoutesFromRepo);
+            var touristRouteDto = _mapper.Map<IEnumerable<ToutistRouteDto>>(touristRoutesFromRepo);
+            return Ok(touristRouteDto);
         }
-
+        
         [HttpGet("{touristRouteId}")]
         public IActionResult GetTouristRouteById(Guid touristRouteId)
         {

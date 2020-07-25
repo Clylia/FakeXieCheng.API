@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.InteropServices;
+using FakeXieCheng.API.Dtos;
 
 namespace FakeXieCheng.API.Models
 {
