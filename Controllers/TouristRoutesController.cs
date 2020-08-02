@@ -8,6 +8,8 @@ using FakeXieCheng.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using System.Text.RegularExpressions;
+using FakeXieCheng.API.ResourceParameters;
 
 namespace FakeXieCheng.API.Controllers
 {
@@ -25,9 +27,12 @@ namespace FakeXieCheng.API.Controllers
         }
         [HttpGet]
         [HttpHead]
-        public IActionResult GetTouristRoutes()
+        public IActionResult GetTouristRoutes(
+            [FromQuery] TouristRouteResourceParameters parameters
+            //[FromQuery]string keyword,string rating
+            )
         {
-            var touristRoutesFromRepo = _touristRouteRepository.GetTouristRoutes();
+            var touristRoutesFromRepo = _touristRouteRepository.GetTouristRoutes(parameters.Keyword, parameters.OperatorType, parameters.RatingValue);
             if (touristRoutesFromRepo == null || touristRoutesFromRepo.Count() <= 0)
             {
                 return NotFound("没有旅游路线");
@@ -35,7 +40,7 @@ namespace FakeXieCheng.API.Controllers
             var touristRouteDto = _mapper.Map<IEnumerable<ToutistRouteDto>>(touristRoutesFromRepo);
             return Ok(touristRouteDto);
         }
-        
+
         [HttpGet("{touristRouteId}")]
         public IActionResult GetTouristRouteById(Guid touristRouteId)
         {
