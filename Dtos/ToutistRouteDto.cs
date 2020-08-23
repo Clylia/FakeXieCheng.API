@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FakeXieCheng.API.Dtos
 {
-    public class ToutistRouteDto
+    public class TouristRouteDto
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

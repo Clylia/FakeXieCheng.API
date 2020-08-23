@@ -12,7 +12,7 @@ namespace FakeXieCheng.API.Profiles
     {
         public TouristRouteProfile()
         {
-            CreateMap<TouristRoute, ToutistRouteDto>()
+            CreateMap<TouristRoute, TouristRouteDto>()
                 .ForMember(
                     dest => dest.Price,
                     opt => opt.MapFrom(src => src.OriginalPrice * (decimal)(src.DiscountPresent ?? 1))
@@ -29,6 +29,12 @@ namespace FakeXieCheng.API.Profiles
                     dest => dest.DepartureCity,
                     opt => opt.MapFrom(src => src.DepartureCity.ToString())
                 );
+
+            CreateMap<TouristRouteForCreationDto, TouristRoute>()
+                .ForMember(
+                dest => dest.Id,
+                opt => opt.MapFrom(src=>Guid.NewGuid())
+                ) ;
         }
     }
 }

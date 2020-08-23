@@ -56,5 +56,35 @@ namespace FakeXieCheng.API.Services
         {
             return _context.TouristRoutes.Any(t=>t.Id==touristRouteId);
         }
+        public void AddTouristRoute(TouristRoute touristRoute)
+        {
+            if (touristRoute==null)
+            {
+                throw new ArgumentNullException(nameof(touristRoute));
+            }
+            _context.TouristRoutes.Add(touristRoute);
+            //_context.SaveChanges();
+            //Save();
+        }
+        public bool Save()
+        {
+            return (_context.SaveChanges()>=0 );
+        }
+
+        public void AddTouristRoutePicture(Guid touristRouteId, TouristRoutePicture touristRoutePicture)
+        {
+            if (touristRouteId==Guid.Empty)
+            {
+                throw new ArgumentNullException( nameof(touristRouteId));
+
+            }
+            if (touristRoutePicture==null)
+            {
+
+                throw new ArgumentNullException(nameof(touristRoutePicture));
+            }
+            touristRoutePicture.TouristRouteId = touristRouteId;
+            _context.TouristRoutePictures.Add(touristRoutePicture);
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace FakeXieCheng.API.Controllers
             }
         }
 
-        [HttpGet("{pictureId}")]
+        [HttpGet("{pictureId}",Name = "GetPicture")]
         public IActionResult GetPicture(Guid touristRouteId,int pictureId)
         {
             if (!_touristRouteRepository.TouristRouteExists(touristRouteId))
@@ -59,6 +59,27 @@ namespace FakeXieCheng.API.Controllers
                 return NotFound("图片未找到");
             }
             return Ok(_mapper.Map<TouristRoutePicture,TouristRoutePictureDto>(pictureFromRepo));
+        }
+        [HttpPost]
+        public IActionResult CreateTouristRoutePicture(
+            [FromRoute] Guid touristRouteId,
+            [FromBody] TouristRoutePictureForCreationDto touristRoutePictureForCreationDto)
+        {
+            if (!_touristRouteRepository.TouristRouteExists(touristRouteId))
+            {
+                return NotFound("旅游路线不存在");
+            }
+
+            var pictureModel = _mapper.Map<TouristRoutePicture>(touristRoutePictureForCreationDto);
+            _touristRouteRepository.AddTouristRoutePicture(touristRouteId, pictureModel);
+            _touristRouteRepository.Save();
+
+            var pictureToReturn = _mapper.Map<TouristRoutePictureDto>(pictureModel);
+            return CreatedAtRoute(
+                "GetPicture",
+                new { touristRouteId = touristRouteId , pictureId = pictureModel.Id },
+                pictureToReturn
+                );
         }
     }
 }

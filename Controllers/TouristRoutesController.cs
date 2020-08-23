@@ -37,11 +37,11 @@ namespace FakeXieCheng.API.Controllers
             {
                 return NotFound("没有旅游路线");
             }
-            var touristRouteDto = _mapper.Map<IEnumerable<ToutistRouteDto>>(touristRoutesFromRepo);
+            var touristRouteDto = _mapper.Map<IEnumerable<TouristRouteDto>>(touristRoutesFromRepo);
             return Ok(touristRouteDto);
         }
 
-        [HttpGet("{touristRouteId}")]
+        [HttpGet("{touristRouteId}",Name = "GetTouristRouteById")]
         public IActionResult GetTouristRouteById(Guid touristRouteId)
         {
             var touristRouteFromRepo = _touristRouteRepository.GetTouristRoute(touristRouteId);
@@ -76,8 +76,23 @@ namespace FakeXieCheng.API.Controllers
             //    DepartureCity=touristRouteFromRepo.DepartureCity.ToString()
 
             //};
-            var touristRouteDto = _mapper.Map<ToutistRouteDto>(touristRouteFromRepo);
+            var touristRouteDto = _mapper.Map<TouristRouteDto>(touristRouteFromRepo);
             return Ok(touristRouteDto);
+        }
+
+        //*/api/TouristRoutes
+        [HttpPost]
+        public IActionResult CreateTouristRoute([FromBody]TouristRouteForCreationDto touristRouteForCreationDto)
+        {
+            var touristRouteModel = _mapper.Map<TouristRoute>(touristRouteForCreationDto);
+            _touristRouteRepository.AddTouristRoute(touristRouteModel);
+            _touristRouteRepository.Save();
+            var touristRouteToReturn = _mapper.Map<TouristRouteDto>(touristRouteModel);
+            return CreatedAtRoute(
+                "GetTouristRouteById",
+                new { touristRouteId=touristRouteToReturn.Id},
+                touristRouteToReturn
+            );
         }
     }
 }
