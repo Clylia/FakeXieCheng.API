@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using AutoMapper;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
 
 namespace FakeXieCheng.API
 {
@@ -36,7 +37,12 @@ namespace FakeXieCheng.API
                 //setupAction.OutputFormatters.Add(
                 //    new XmlDataContractSerializerOutputFormatter()
                 //    );
-            }).AddXmlDataContractSerializerFormatters()
+            })
+                .AddNewtonsoftJson(setupAction=> {
+                    setupAction.SerializerSettings.ContractResolver =
+                        new CamelCasePropertyNamesContractResolver();
+                })
+                .AddXmlDataContractSerializerFormatters()
             .ConfigureApiBehaviorOptions(setupAction=>
             {
                 setupAction.InvalidModelStateResponseFactory = context =>

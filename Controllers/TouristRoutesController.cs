@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using System.Text.RegularExpressions;
 using FakeXieCheng.API.ResourceParameters;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FakeXieCheng.API.Controllers
 {
@@ -112,6 +113,33 @@ namespace FakeXieCheng.API.Controllers
             // 3. 映射model
             _mapper.Map(touristRouteForUpdateDto, touristRouteFromRepo);
 
+            _touristRouteRepository.Save();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{touristRouteId}")]
+        public IActionResult PartiallyUpdateTouristRoute(
+            [FromRoute] Guid touristRouteId,
+            [FromBody] JsonPatchDocument<TouristRouteForUpdateDto> patchDocument
+            )
+        {
+            if (!_touristRouteRepository.TouristRouteExists(touristRouteId
+                ))
+            {
+                return NotFound("旅游路线找不到");
+            }
+
+            var touristRouteFromRepo = _touristRouteRepository.GetTouristRoute(touristRouteId);
+            var touristRouteToPatch = _mapper.Map<TouristRouteForUpdateDto>(touristRouteFromRepo);
+            patchDocument.ApplyTo(touristRouteToPatch,ModelState);
+
+            if (!TryValidateModel(touristRouteToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(touristRouteToPatch,touristRouteFromRepo);
             _touristRouteRepository.Save();
 
             return NoContent();
