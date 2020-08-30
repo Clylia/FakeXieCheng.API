@@ -11,6 +11,7 @@ using AutoMapper;
 using System.Text.RegularExpressions;
 using FakeXieCheng.API.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
+using FakeXieCheng.API.Helper;
 
 namespace FakeXieCheng.API.Controllers
 {
@@ -140,6 +141,59 @@ namespace FakeXieCheng.API.Controllers
             }
 
             _mapper.Map(touristRouteToPatch,touristRouteFromRepo);
+            _touristRouteRepository.Save();
+
+            return NoContent();
+        }
+        /*
+         *
+         *
+         *delete
+         *
+         *
+         https://localhost:5001/api/TouristRoutes/39996f34-013c-4fc6-b1b3-0c1036c47110
+
+
+         [
+    {
+    "op": "replace",
+    "path": "/title",
+    "value": "AASDFERFAREF"
+    },
+    {
+    "op": "replace",
+    "path": "/description",
+    "value": "AASDFERFAREF"
+    }
+]
+         */
+        [HttpDelete("{touristRouteId}")]
+        public IActionResult DeleteTouristRoute([FromRoute] Guid touristRouteId)
+        {
+            if (!_touristRouteRepository.TouristRouteExists(touristRouteId))
+            {
+                return NotFound("旅游路线未找到");
+            }
+
+            var touristRoute = _touristRouteRepository.GetTouristRoute(touristRouteId);
+            _touristRouteRepository.DeleteTouristRoute(touristRoute);
+            _touristRouteRepository.Save();
+
+            return NoContent();
+        }
+
+        //   https://localhost:5001/api/TouristRoutes/(39996f34-013c-4fc6-b1b3-0c1036c47111,39996f34-013c-4fc6-b1b3-0c1036c47113)
+        [HttpDelete("({touristIDs})")]
+        public IActionResult DeleteByIDs(
+            [ModelBinder(BinderType =typeof(ArrayModelBinder))][FromRoute] IEnumerable<Guid> touristIDs)
+        {
+            if (touristIDs==null)
+            {
+                return BadRequest();
+            }
+
+            var touristRouteFromRepo = _touristRouteRepository.GetTouristRouteByIDList(touristIDs);
+            _touristRouteRepository.DeleteTouristRoutes(touristRouteFromRepo);
             _touristRouteRepository.Save();
 
             return NoContent();

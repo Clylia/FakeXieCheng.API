@@ -46,19 +46,19 @@ namespace FakeXieCheng.API.Controllers
             }
         }
 
-        [HttpGet("{pictureId}",Name = "GetPicture")]
-        public IActionResult GetPicture(Guid touristRouteId,int pictureId)
+        [HttpGet("{pictureId}", Name = "GetPicture")]
+        public IActionResult GetPicture(Guid touristRouteId, int pictureId)
         {
             if (!_touristRouteRepository.TouristRouteExists(touristRouteId))
             {
                 return NotFound("旅游路线不存在");
             }
             var pictureFromRepo = _touristRouteRepository.GetPicture(pictureId);
-            if (pictureFromRepo==null)
+            if (pictureFromRepo == null)
             {
                 return NotFound("图片未找到");
             }
-            return Ok(_mapper.Map<TouristRoutePicture,TouristRoutePictureDto>(pictureFromRepo));
+            return Ok(_mapper.Map<TouristRoutePicture, TouristRoutePictureDto>(pictureFromRepo));
         }
         [HttpPost]
         public IActionResult CreateTouristRoutePicture(
@@ -77,9 +77,36 @@ namespace FakeXieCheng.API.Controllers
             var pictureToReturn = _mapper.Map<TouristRoutePictureDto>(pictureModel);
             return CreatedAtRoute(
                 "GetPicture",
-                new { touristRouteId = touristRouteId , pictureId = pictureModel.Id },
+                new { touristRouteId = touristRouteId, pictureId = pictureModel.Id },
                 pictureToReturn
                 );
+        }
+        /*
+         
+         
+         https://localhost:5001/api/TouristRoutes/39996f34-013c-4fc6-b1b3-0c1036c47111/pictures/32
+         
+         
+         
+         
+         
+         */
+        [HttpDelete("{pictureId}")]
+        public IActionResult DeletePicture(
+            [FromRoute] Guid touristRouteId,
+            [FromRoute] int pictureId
+            )
+        {
+            if (!_touristRouteRepository.TouristRouteExists(touristRouteId))
+            {
+                return NotFound("旅游路线未找到");
+            }
+            var picture = _touristRouteRepository.GetPicture(pictureId);
+            _touristRouteRepository.DeleteTouristRoutePicture(picture);
+            _touristRouteRepository.Save();
+
+            return NoContent();
+
         }
     }
 }
