@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeXieCheng.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200719062149_InitMigration")]
-    partial class InitMigration
+    [Migration("20201011094641_repairDepatureTime")]
+    partial class repairDepatureTime
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,7 +60,9 @@ namespace FakeXieCheng.API.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1500)")
+                        .HasMaxLength(1500);
 
                     b.Property<int?>("TravelDays")
                         .HasColumnType("int");

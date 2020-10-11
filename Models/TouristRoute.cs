@@ -26,7 +26,7 @@ namespace FakeXieCheng.API.Models
         public double? DiscountPresent { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
-        public DateTime DepatureTime { get; set; }
+        public DateTime DepartureTime { get; set; }
         [MaxLength]
         public string Features { get; set; }
         [MaxLength]

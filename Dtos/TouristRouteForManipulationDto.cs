@@ -22,7 +22,7 @@ namespace FakeXieCheng.API.Dtos
         //public double? DiscountPresent { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
-        public DateTime DepatureTime { get; set; }
+        public DateTime DepartureTime { get; set; }
         public string Features { get; set; }
         public string Fees { get; set; }
         public string Notes { get; set; }
