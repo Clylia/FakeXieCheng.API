@@ -1,4 +1,6 @@
 ﻿using FakeXieCheng.API.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace FakeXieCheng.API.Database
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext:IdentityDbContext<IdentityUser>//DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
         {
