@@ -47,12 +47,12 @@ namespace FakeXieCheng.API
                                     {
                                         ValidateIssuer = true,
                                         ValidIssuer = Configuration["Authentication:Issuer"],
-                                
+
                                         ValidateAudience = true,
                                         ValidAudience = Configuration["Authentication:Audience"],
-                                
+
                                         ValidateLifetime = true,
-                                
+
                                         IssuerSigningKey = new SymmetricSecurityKey(secretByte)
                                     };
                                 });
