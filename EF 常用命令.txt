@@ -1,0 +1,11 @@
+﻿EF 命令行
+使用管理台模式
+Add-Migration 添加一个新的迁移（名词）,string是迁移的名称
+remove-Migration 删除上一次的迁移
+Update-Database 更新最近一次的迁移到数据库（有时候可能与原来的数据库产生冲突，所以可能并不能迁移到数据库）
+Update-Database -Migration 0 表示清空数据库，回到空数据库状态
+Script-Migration 查看迁移脚本
+使用cmd模式
+dotnet ef migrations add InitialCreate -v
+dotnet ef database update -v
+链接:https://www.twle.cn/l/yufei/aspnetcore/dotnet-aspnet-migrations.html
