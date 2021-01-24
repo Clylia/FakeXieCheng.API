@@ -8,11 +8,14 @@ namespace FakeXieCheng.API.ResourceParameters
 {
     public class TouristRouteResourceParameters
     {
+
         public string Keyword { get; set; }
         public int? RatingValue { get; set; }
         public string OperatorType { get; set; }
         private string rating;
-        public string Rating { get 
+        public string Rating
+        {
+            get
             { return rating; }
             set
             {
@@ -26,6 +29,7 @@ namespace FakeXieCheng.API.ResourceParameters
                     RatingValue = Int32.Parse(match.Groups[2].Value);
                 }
                 rating = value;
-            } }
+            }
+        }
     }
 }

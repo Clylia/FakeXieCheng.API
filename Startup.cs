@@ -21,6 +21,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using FakeXieCheng.API.Models;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace FakeXieCheng.API
 {
@@ -101,6 +102,8 @@ namespace FakeXieCheng.API
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddHttpClient();
+
+            services.AddSingleton<IActionContextAccessor,ActionContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

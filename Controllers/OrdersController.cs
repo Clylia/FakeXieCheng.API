@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FakeXieCheng.API.Dtos;
+using FakeXieCheng.API.ResourceParameters;
 using FakeXieCheng.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -38,7 +39,8 @@ namespace FakeXieCheng.API.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes ="Bearer")]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetOrders(
+            [FromQuery] PaginationResourceParameter paginationParameters)
         {
             //1 获取当前用户
             var userId = _httpContextAccessor
@@ -46,7 +48,7 @@ namespace FakeXieCheng.API.Controllers
 
             //2 使用用户id 来获取订单历史计录
 
-            var orders = await _touristRouteRepository.GetOrdersByUserId(userId);
+            var orders = await _touristRouteRepository.GetOrdersByUserId(userId,paginationParameters.PageSize,paginationParameters.PageNumber);
             return Ok(_mapper.Map<IEnumerable<OrderDto>>(orders));
         }
 

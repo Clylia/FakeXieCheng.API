@@ -1,4 +1,5 @@
 ﻿using FakeXieCheng.API.Database;
+using FakeXieCheng.API.Helper;
 using FakeXieCheng.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -32,7 +33,7 @@ namespace FakeXieCheng.API.Services
            return await _context.TouristRoutes.Include(t=>t.TouristRoutePictures).FirstOrDefaultAsync(n=>n.Id==touristRouteId);
         }
 
-        public async Task<IEnumerable<TouristRoute>> GetTouristRoutesAsync(string keyword,string operatorType,int? rating)
+        public async Task<PaginationList<TouristRoute>> GetTouristRoutesAsync(string keyword,string operatorType,int? rating, int pageSize, int pageNumber)
         {
             IQueryable<TouristRoute> result = _context.TouristRoutes.Include(t => t.TouristRoutePictures);
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -49,7 +50,10 @@ namespace FakeXieCheng.API.Services
                     _=>result.Where(t=>t.Rating==rating),
                 };
             }
-            return await result.ToListAsync();
+
+
+
+            return await PaginationList<TouristRoute>.CreateAsync(pageNumber,pageSize,result) ;
         }
         public async Task<IEnumerable<TouristRoute>> GetTouristRouteByIDListAsync(IEnumerable<Guid> ids)
         {
@@ -148,9 +152,13 @@ namespace FakeXieCheng.API.Services
             await _context.Orders.AddAsync(order);
         }
 
-        public async Task<IEnumerable<Order>> GetOrdersByUserId(string userId)
+        public async Task<PaginationList<Order>> GetOrdersByUserId(
+            string userId, int pageSize, int pageNumber)
         {
-            return await _context.Orders.Where(o=>o.UserId==userId).ToListAsync();
+            //return await _context.Orders.Where(o=>o.UserId==userId).ToListAsync();
+            IQueryable<Order> result = _context.Orders.Where(o=>o.UserId==userId);
+            return await PaginationList<Order>.CreateAsync(pageNumber,pageSize,result);
+
         }
 
         public async Task<Order> GetOrderById(Guid orderId)
