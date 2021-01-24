@@ -77,9 +77,9 @@ namespace FakeXieCheng.API.Controllers
             await _touristRouteRepository.SaveAsync();
             //3 向第三方提交支付请求，等待第三方相应
             var httpClient = _httpClientFactory.CreateClient();
-            string url= @"https://localhost:3001/api/FakeVanderPaymentProcess?orderNumber={0}&returnFault={1}";
+            string url= @"http://123.56.149.216/api/FakeVanderPaymentProcess?icode={0}orderNumber={1}&returnFault={2}";
             var response = await httpClient.PostAsync(
-                string.Format(url,order.Id,false),
+                string.Format(url, "80421794A5349F19", order.Id,false),  //最后一个值设置的是支付的结果 ，决定了支付的结果
                 null
                 );
             //4 提取支付结果，以及支付信息

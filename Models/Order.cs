@@ -45,6 +45,10 @@ namespace FakeXieCheng.API.Models
 
         public void PaymentProcessing()
         {
+            if (State== OrderStateEnum.Processing)//如果当前状态就是processing，那么就没必要切换状态
+            {                                                               //应该可以在stateless中配置的，懒得搞了
+                return;
+            }
             _machine.Fire(OrderStateTriggerEnum.PlaceOrder);
         }
 
@@ -69,7 +73,7 @@ namespace FakeXieCheng.API.Models
 
             _machine.Configure(OrderStateEnum.Processing)
                 .Permit(OrderStateTriggerEnum.Approve, OrderStateEnum.Completed)
-                .Permit(OrderStateTriggerEnum.Reject,OrderStateEnum.Declined);
+                .Permit(OrderStateTriggerEnum.Reject, OrderStateEnum.Declined);
 
             _machine.Configure(OrderStateEnum.Declined)
                 .Permit(OrderStateTriggerEnum.PlaceOrder, OrderStateEnum.Processing);
